@@ -1,0 +1,210 @@
+营销系统的架构:
+
+前端架构
+
+├── src/
+│   ├── components/               # UI组件
+│   │   ├── common/              # 通用组件
+│   │   ├── platforms/           # 平台相关组件
+│   │   └── rules/               # 规则管理组件
+│   ├── hooks/                   # React Hooks
+│   ├── stores/                  # 状态管理
+│   ├── services/                # 服务层
+│   ├── graphql/                 # GraphQL查询和变更
+│   ├── types/                   # TypeScript类型定义
+│   ├── utils/                   # 工具函数
+│   ├── lib/                     # 第三方库封装
+│   └── providers/               # 上下文提供者
+数据流架构
+
+Client <-> API Gateway <-> GraphQL Server <-> Services <-> Database
+                                         └-> Cache
+状态管理
+
+├── stores/
+│   ├── analyticsStore.ts        # 数据分析状态
+│   ├── platformStore.ts         # 平台管理状态
+│   ├── uiStore.ts              # UI状态
+│   ├── syncStore.ts            # 同步状态
+│   ├── filterStore.ts          # 过滤器状态
+│   └── reportStore.ts          # 报表状态
+建议的基础模块(独立部署):
+
+认证与授权服务
+
+auth-service/
+├── src/
+│   ├── auth/                    # 认证逻辑
+│   ├── rbac/                    # 角色权限控制
+│   └── oauth/                   # OAuth集成
+日志管理服务
+
+logging-service/
+├── src/
+│   ├── collectors/             # 日志收集器
+│   ├── processors/            # 日志处理器
+│   └── storage/               # 日志存储
+API监控服务
+
+monitoring-service/
+├── src/
+│   ├── metrics/               # 指标收集
+│   ├── alerts/               # 告警系统
+│   └── dashboard/           # 监控面板
+通知服务
+
+notification-service/
+├── src/
+│   ├── channels/             # 通知渠道(邮件、短信等)
+│   ├── templates/           # 通知模板
+│   └── scheduler/          # 定时通知
+建议的独立业务模块:
+
+支付系统
+
+payment-service/
+├── src/
+│   ├── providers/            # 支付供应商集成
+│   ├── transactions/        # 交易处理
+│   └── reconciliation/     # 对账系统
+多租户系统
+
+tenant-service/
+├── src/
+│   ├── management/          # 租户管理
+│   ├── isolation/          # 数据隔离
+│   └── billing/           # 计费系统
+自动化部署系统
+
+deployment-service/
+├── src/
+│   ├── pipelines/           # 部署流水线
+│   ├── environments/       # 环境管理
+│   └── rollback/          # 回滚机制
+数据同步系统
+
+sync-service/
+├── src/
+│   ├── adapters/            # 平台适配器
+│   ├── scheduler/          # 同步调度
+│   └── validation/        # 数据验证
+这样的架构设计有以下优点:
+
+高内聚低耦合
+便于独立开发和部署
+易于扩展和维护
+支持团队并行开发
+便于性能优化和扩展
+建议的实施步骤:
+
+先完善前端功能和交互
+逐步抽离基础设施模块
+独立开发业务模块
+通过API Gateway统一管理服务
+建立完整的CI/CD流程
+这样可以确保:
+
+快速交付核心功能
+平滑过渡到微服务架构
+降低开发复杂度
+提高系统可维护性
+
+前端技术栈:
+
+
+1. 核心框架
+- React + TypeScript
+- Vite 作为构建工具
+- TailwindCSS 作为 UI 框架
+
+2. 状态管理
+- Zustand 作为全局状态管理
+- React Context 用于特定功能域
+
+3. 数据获取/缓存
+- Apollo Client 处理 GraphQL 请求
+- React Query 用于数据缓存和同步
+- IndexedDB 用于本地数据持久化
+
+4. UI 组件
+- Headless UI 提供无样式基础组件
+- Heroicons 提供图标
+- Recharts 用于数据可视化
+
+5. 工具库
+- date-fns 处理日期
+- zod 用于类型验证
+后端技术栈:
+
+
+1. API 层
+- NestJS (Node.js 框架)
+- GraphQL 作为 API 查询语言
+- Apollo Server 提供 GraphQL 服务
+
+2. 数据库
+- Supabase (PostgreSQL)
+- Redis 用于缓存
+
+3. 微服务 (Go)
+- 数据同步服务
+- 规则引擎服务
+- 通知服务
+- 报表服务
+
+4. 基础设施
+- Docker 容器化
+- Kubernetes 编排
+- GitHub Actions CI/CD
+开发工具:
+
+
+1. 代码质量
+- ESLint
+- Prettier
+- TypeScript
+- Husky (Git hooks)
+
+2. 测试
+- Vitest 单元测试
+- Cypress E2E 测试
+- MSW 模拟 API
+
+3. 文档
+- Storybook 组件文档
+- TypeDoc API 文档
+项目结构:
+
+
+src/
+├── components/        # UI 组件
+├── hooks/            # React Hooks
+├── stores/           # 状态管理
+├── services/         # API 服务
+├── utils/            # 工具函数
+├── types/            # TypeScript 类型
+├── graphql/          # GraphQL 查询/变更
+└── providers/        # 上下文提供者
+
+services/            # 微服务
+├── sync/            # 数据同步服务
+├── rules/           # 规则引擎服务
+├── notify/          # 通知服务
+└── report/          # 报表服务
+这样的技术栈组合具有以下优势:
+
+前端:
+开发效率高
+性能优秀
+类型安全
+组件复用性强
+后端:
+服务解耦
+可独立扩展
+易于维护
+高性能
+整体:
+技术栈现代化
+开发体验好
+易于测试
+部署灵活
